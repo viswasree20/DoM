@@ -1,0 +1,118 @@
+<%-include("chat_list.ejs")%>
+<div id="chat-box">
+	<div class="chat-box-user-id-title">
+		<div class="userimage-status"><img id='userimage' src="/image/<%=chatuser.username%>/<%=chatuser.picture.profile%>"></div>
+		<div class="username" id="<%=chatuser._id%>"><%=chatuser.username%></div><hr id="hrchatbox">
+		<div id="chat-title-search">
+			<i class="fa fa-search" id="chat-search"></i>
+		</div>
+		<span id="online_status" >offline</span>
+		<button id="option" onfocusin="option()" onfocusout="optionout()"><span id="dot">...</span></button>
+
+		
+		<ul id="optionlist">
+			<li>user info</li>
+			<li>Media height</li>
+			<li>Mute notificstion</li>
+			<li>clear chat</li>
+			<li> Wallpaper</li>
+		</ul>
+
+		<div class="chattitlebtn-box">
+			<button class="titlebtn" id="videocall"><i class="fa fa-video-camera"></i></button>
+			<button class="titlebtn" id="phonecall"><i class="fa fa-phone"></i></button>
+		</div>
+
+		<i class="bar" id="part2">|</i>
+	</div>
+	<div id="chat_area">
+		<div id="view" style="padding: 0px;margin: 0px;">
+			<%usermsg.msg.forEach(function(text){%>
+				<div class="Date">
+					<p class="datestr"><%=new Date(text.Date).toDateString()%></p>
+				</div>
+				<%let str=text.Date,hh=new Date(str).getHours(),mm=new Date(str).getMinutes(),timezone="AM"%>
+				<%if(mm<10){mm='0'+mm}%>
+				<%if(hh>12){timezone="PM";hh=hh-12;if(hh<10){hh="0"+hh}}%>
+				<%if(text.msgformet=="Send" || text.msgformet=="Receive"||text.msgformet=="Sendtext" || text.msgformet=="Receivetext"){%>
+					<div class="<%=text.msgformet%>">
+						<span id="<%=text._id%>"><%=text.msgtext%><p id="chattime"><%=hh+":"+mm+":"+timezone%></p></span>
+					</div>
+				<%}%>
+				<%if(text.msgformet=="Sendimage" || text.msgformet=="Receiveimage"){%>
+					<div class="<%=text.msgformet%>">
+						<%let textparese=JSON.parse(text.msgtext)%>
+						<span id="<%=text._id%>"><img src="/image/<%=user.username%>/send/<%=textparese.image%>"><p id="chattime"><%=hh+":"+mm+":"+timezone%></p></span>
+					</div>
+				<%}%>
+				<%if(text.msgformet=="Sendaudio" || text.msgformet=="Receiveaudio"){%>
+					<div class="<%=text.msgformet%>">
+						<span id="<%=text._id%>"><audio controls><source src="/image/<%=user.username%>/audiochat/<%=text.msgtext%>"  type="audio/mpeg"></audio><p id="chattime"><%=hh+":"+mm+":"+timezone%></p></span>
+					</div>
+				<%}%>
+				<%if(text.msgformet=="Sendvideo" || text.msgformet=="Receivevideo"){%>
+					<div class="<%=text.msgformet%>">
+						<%let textpar=JSON.parse(text.msgtext)%>
+						<span id="<%=text._id%>"><video controls><source src="/image/<%=user.username%>/send/video/<%=textpar.video%>"  type="audio/mpeg"></video><p id="chattime"><%=hh+":"+mm+":"+timezone%></p></span>
+					</div>
+				<%}%>
+			<%})%>	
+		</div>
+	</div>
+	<div id="bottom-sendbox">
+		<div id="chat-contianer">
+			<textarea id="chatarea" name="comment" placeholder="Type a message" contenteditable="true"></textarea>
+			<!---button id="cameraset"><i id="camera" class="fa fa-camera"></i></button-->
+		</div>
+		<button id="sendbtn" onclick="send()"><i class="material-icons" id="sendbtn_icon">keyboard_voice</i></button>
+	</div>
+	<div id="send_image_capture"></div>
+	<div id="cam_div">
+		<video id="cam_screen" ></video>
+		<div id="cam_control">
+			<button id="cam_control_click" ><i id="cam_control_click_circle" class="fa fa-circle"></i></button>	
+		</div>
+		<button id="cam_control_close" class="fa fa-close"></button>
+	</div>
+	<button id="menu" onfocusin="iconin()" onfocusout="iconout()">
+		<i id="menu-option">+</i> 
+		<div id="menu-list">
+			<i class="fa fa-image"  id="chatimage">
+				<input type="file" name="chatimage" id="inputimage" hidden >
+			</i>
+			<i id="camera" class="fa fa-camera"></i>
+		</div>
+		<button id="new_camera">
+			<span id="camera_outline">
+				<i id="camera_cir"></i>
+				<i id="camera_but"></i>
+				<div id="camera_flash"></div>
+			</span>
+		</button>
+	</button>
+
+	
+</div>
+<script type="text/javascript">
+	let profileuser=document.getElementById("profile-pic").children[0].attributes[0];
+	let test=`/image/<%=chatuser.username%>/<%=chatuser.picture.profile%>`;
+	let userimg=`<%=chatuser.username%>`;
+	profileuser.value=test;
+
+	let datebox=document.getElementsByClassName("Date"),change;
+	for(ind=0;ind<datebox.length;ind++){
+		let date=datebox[ind].children;
+		if(date[0].innerText==new Date().toDateString()){
+			date[0].innerText="Today";
+		}
+		if(date[0].innerText!=change){
+			//console.log("no");
+			change=date[0].innerText;
+		}
+		else{
+			//console.log("same");
+			datebox[ind].style.display="none";
+		}
+	}
+	
+</script>

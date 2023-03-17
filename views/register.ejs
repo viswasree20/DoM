@@ -1,0 +1,29 @@
+<%-include("login.ejs")%>
+<div class="container" id="container2">
+	<a href="/login"><i class="fa fa-close" id="closeregister"></i></a>
+	<form method="post" action="/register" id="signin">
+		<h1 id="titlesignin">Create New user account</h1><hr id="hrsignin">
+		<input type="text" name="firstname" maxlength="30" id="first-name" placeholder="Enter the Firstname" required="">
+		<input type="text" name="lastname" maxlength="30" id="last-name" placeholder="Enter the Lastname" required="">
+		<input type="text" name="username" maxlength="20" id="user-name" placeholder=" create User Name" required="">
+		<div class="gender">
+			<label for="gender">Gender :</label>
+			<input type="radio" name="gender" id="gender" value="male" checked=""><p class="option"style="display: contents;">Male</p>
+			<input type="radio" name="gender" value="Female"><p class="option"style="display: contents;">Female</p>
+		</div>
+		<input type="Number" name="phonenumber" id="phonenumber" min="1111111111" max="9999999999" autocomplete="" placeholder="Enter the phone number" required="">
+		<input type="email" name="email" id="email-id"  placeholder="Enter the Email-id" required="">
+		<div class="dob">
+			<label>Date of Birth :</label>
+			<input type="Number" name="date" id="date" min="1" max="31" placeholder="dd" required="" maxlength="2">
+			<input type="Number" name="month" id="month" min="1" max="12" placeholder="mm" required="">
+			<input type="Number" name="year" id="year" min="1947" max="2021" placeholder="yyyy" required="">
+		</div>
+		<input type="password" name="userpassword" class="userpasswords" id="userpassword" required="" maxnlength="15" minlength="8" 	placeholder="Enter the password" >
+		<input type="password" name="reuserpassword" class="userpasswords" id="re-userpassword" required="" maxlength="15" minlength="8	" placeholder="ReEnter the password" oninput="checkrepass()">
+		<div id="boxviewpoint">
+			<input type="checkbox" name="view" onclick="boxviewpassword()" class="view"><p class="option" style="display: contents;">Snow Password</p>
+		</div>
+		<br><input type="submit" name="sign-in" value="sign-in" id="sign-in">
+	</form>
+</div>

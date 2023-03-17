@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1"> 
+	<!--check the "viewport" and content-->
+	<title>Dream of Depth</title>
+	
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/profilestyle.css">
+	<link rel="stylesheet" type="text/css" href="/css/stylelogin.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+</head>
+<body >
+	<div style="width: 100%;height: 100;" >
+		<%- body %>
+	</div>
+
+	<script type="text/javascript" src="/js/main.js"></script>
+		<script type="text/javascript">
+		console.log("date",new Date());
+		function listdatestatus(str){
+			let date=new Date(str);
+			console.log("datelist",date)
+			let Mon=date.getMonth();
+			console.log(Mon)
+			if(Mon){Mon+=1;};
+			if(Mon<10){MM="0"+Mon;}
+			let day=date.getDate();if(day<10){day="0"+day;};
+			let year=date.getFullYear().toString().slice(2);
+			let timezone="AM"
+			let mm=date.getMinutes();if(mm<10){mm='0'+mm};
+			console.log("mm",mm)
+			let hh=date.getHours();if(hh<10){hh="0"+hh;};if(hh>12){timezone="PM";hh=hh-12;if(hh<10){hh="0"+hh;}}
+			if(new Date().toDateString()===date.toDateString()){
+				console.log("dqdqwd",`${hh}:${mm}:${timezone}`)
+				return `${hh}:${mm}:${timezone}`;
+			}
+			else if(day == new Date().getDate()-1){
+				return "Yesterday";
+			}
+			else {
+				return `${day}/${Mon}/${year}`;
+			}
+		}
+		function viewpassword(){
+			let val=document.getElementById("password");
+			if (val.type==="password") {
+			val.type="text";
+			}
+			else{
+				val.type="password";
+			}
+		}
+		const valpassword=document.getElementById("userpassword");
+		const valrepassword=document.getElementById("re-userpassword");
+		function boxviewpassword(){
+			if (valpassword.type==="password" || valrepassword.type==="password") {
+				valpassword.type="text";
+				valrepassword.type="text";
+			}
+			else{
+				valpassword.type="password";
+				valrepassword.type="password";
+			}
+		}
+		function checkrepass(){
+			if(valpassword.value==valrepassword.value){
+				valrepassword.style.borderColor="";
+				valpassword.style.borderColor="";
+			}
+			else{
+				valrepassword.style.borderColor="red";
+				valpassword.style.borderColor="red";
+			}
+		}
+		function opencontainer2(){
+			document.getElementById("container2").style.display="block";
+		}
+		function closesignin(){
+			document.getElementById("container2").style.display="none";
+		}
+		function searchlist(e){
+			fetch("/search",{
+				method:'POST',
+				headers:{'content-type':'application/json'},
+				body:JSON.stringify({payload:e.value})
+			})
+			.then(res=> res.json())
+			.then(data=> {
+				const payload=data.payload;
+				let searchResult="";
+				if(payload.length < 1){
+					searchResult ='<p>sorry.Noting match</p>';
+					console.log(searchResult);
+				}
+				payload.forEach((user,index)=>{
+					if(index > 0) searchResult+='<hr>';
+					searchResult +=`<p class="userlist" id="${user._id}" >${user.username}</p>`;
+				})
+				document.getElementById("search_output").innerHTML=searchResult;
+				console.log(data);
+				var list=document.getElementsByClassName("userlist");
+				for(var i=0;i <= list.length;i++){
+					list[i].addEventListener("click",(e)=>{
+						console.log(e.target.innerHTML);
+						//:id msg send
+						fetch("/"+`${e.target.getAttribute("id")}`,{
+							method:"POST",
+							headers:{
+								"Accept":"application/json,text/plain,*/*",
+								"content-type":"application/json"
+							},
+							body:JSON.stringify({id:e.target.innerHTML})
+						}).then(res=> res.json()).then(data=> {window.location.href="/chat-list"})
+					});
+				}
+			})
+		}
+		console.log("done");
+		function searchchatlist(e){
+			fetch("/searchlist",{
+				method:'POST',
+				headers:{'content-type':'application/json'},
+				body:JSON.stringify({payload:e.value})
+			})
+			.then(res=> res.json())
+			.then(data=> {
+				const payload=data.payload;
+				let searchResult="";
+				if(payload.length < 1){
+					searchResult ='<p>sorry.Noting match</p>';
+					console.log(searchResult);
+				}
+				payload.forEach((user,index)=>{
+					//if(index > 0) searchResult+='<hr>';
+					let ddd=user.msg[user.msg.length-1]////.find(list=>{if (list.msgtext) {return list.msgtext}})
+					console.log("dadsd",ddd)
+					let excute=""
+					if(ddd!== undefined){
+					let time=listdatestatus(ddd.Date)
+					searchResult +=`<a class="user-id" href="/chat-list/${user._id}" ><div class="user-id-img"><img src="/image/1621580158887.jpg"></div><p id="user-id-name">${user.username}</p><p id="lastmsg">${ddd.msgtext}</p><p class="timeunit" id="time">${time}</p></a>`;
+					}
+					
+				})
+				document.getElementById("outcome").innerHTML=searchResult;
+			})
+		}
+
+	</script>
+
+</body>
+</html>

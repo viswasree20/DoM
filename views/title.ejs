@@ -1,0 +1,53 @@
+<div id="cover-image" ><img src="/image/1621580158879.jpg" ></div>
+<div id="profile-pic" onclick="profilepic()">
+	<img src="/image/1621580158887.jpg" >
+	<input type="file" name="fileimage" id="fileimage"hidden></div>
+<div id="full-profile-pic">
+	<div id="profile">
+		<span id="close" onclick="closeimage()">x</span>
+		<img src="/image/<%=user.username%>/<%=user.picture.profile%>" a>
+		
+	</div>
+</div>
+<div id="box"></div>
+<div id="lense"></div>
+<div id="gg"></div>
+<div class="title">
+	<h2>DOD</h2>
+	<a class="opertion" id="livechat" href="/">Home</a>
+	<a class="opertion" id="chat" href="/chat-list">chat</a>
+	<div id="msgnotify"></div>
+	<a class="opertion" id="status" href="#">status</a>
+	<i id="v_bar" >|</i>
+	<i class="fa fa-search" onclick="search()" id="search-icon"></i>
+
+	<div id="search">
+		<input type="text" name="chat-list" id="searchbar" onkeyup="searchlist(this)" placeholder="search">  
+		<i class="fa fa-close" onclick="closetext()" id="close"></i>
+	</div>
+	<div id="search_output"></div>
+	<div id="user-profile" onclick="usermenu()"><img src="/image/<%=user.username%>/<%=user.picture.profile%>"></div>
+	<div id="usermenu">
+		<a class="userprofile_menu" href="/userprofile" id="userprofile_userid"><%= user.username%></a>
+		<a class="userprofile_menu" href="">Setting</a>
+		<a class="userprofile_menu" href="/logout">Log Out</a></li>
+	</div>
+</div>
+<div id="mobile_menu">
+	<a class="mobile_menu_icon" href="#"><i class="material-icons">image</i></a>
+	<a class="mobile_menu_icon" href="/chat-list"><i class="material-icons">comment</i></a>
+	<a class="mobile_menu_icon" href="/"><i class="material-icons">home</i></a>
+	<a class="mobile_menu_icon" href="#"><i class="material-icons">home</i></a>
+	<a class="mobile_menu_icon" href="/userprofile" id="user_icon"><img src="../image/1621580158887.jpg"></a>
+</div>
+<div id="circle">
+	<a class="mobile_menu_icon" href="/"><i class="material-icons" id="circle_icon">home</i></a>
+</div>
+<script type="text/javascript">
+	document.getElementById("livechat").style.borderBottom="3px solid";
+	let cover = document.getElementById("cover-image");
+	let profile = document.getElementById("profile-pic");
+	cover.addEventListener("click",function(){
+		profile.style.left="200px";
+	})
+</script>

@@ -1,0 +1,38 @@
+<%- include("title.ejs")%>
+
+<div id="user_profile">
+	<div id="log_out_menu">
+		<button id="log_out_menu_icon" onclick="log_out_menu()" ><hr><hr><hr></button>
+		<div id="log_out_menu_tap">
+			<span><a href="/logout">Logout</a></span>
+		</div>
+	</div>
+	<div id="user_profile_menu">
+		<ul id="profilelist">
+			<li id="changeprofile">Change profile</li>
+		</ul>
+	</div>
+	<input type="file" name="profile" id="input_profile_pic" hidden>
+	<div id="user_profile_picture" onclick="topupmenu()"><img src="/image/<%=user.username%>/<%=user.picture.profile%>"></div>
+	<h2><%=user.username%></h2>
+	<h3>viswa</h3>
+	<hr class="nhr">
+	<div id="dream_style">
+		<h4>Dream style</h4>
+		<p>To search inner me,search for new people,new peace of world oiggirrwpg rqe rqr ingrg</p>
+	</div>
+	<!---<h3><%=user.lastname%></h3>--->
+</div>
+<script type="text/javascript">
+	document.getElementById("circle").style.left="780px";
+	let vel=document.getElementById("user_icon").innerHTML;
+	console.log(vel)
+	document.getElementById("circle_icon").innerHTML=vel;
+	document.getElementById("circle_icon").style.margin="7px 1px"
+	function log_out_menu(){
+		document.getElementById("log_out_menu_tap").style.display="block"
+	}
+	function log_out_menu_out(){
+		document.getElementById("log_out_menu_tap").style.display="none"
+	}
+</script>

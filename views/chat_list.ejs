@@ -1,0 +1,73 @@
+<%- include('title.ejs')%>
+<div id="chat-list">
+	<div id="chatsearch">
+		<input type="text" name="chat-list" onkeyup="searchchatlist(this)" id="chatsearchbar" placeholder="search">
+	</div><hr>
+	<div id="outcome">
+		<%user["chatlist"].forEach(function(User){%>
+			<a class="user-id" href="/chat-list/<%=User._id%>" >
+				<div class="user-id-img">
+					<%let pro;profile.find(user=>{if(user.username==User.username){pro=user.picture.profile}}) %>
+					<%if(pro!=undefined){%>
+						<img id="userimage" src="/image/<%=User.username%>/<%=pro%>">
+					<%}%>
+					<%if(pro==undefined){%>
+						<img id="userimage" src="/image/1621580158887.jpg">
+					<%}%>
+				</div>
+				<p id="user-id-name"><%=User.username%></p>
+				<div id="online_status_pointer"></div>
+				<%let arr=User.msg%>
+				<%let ele=User.msg.length-1%>
+				<%for(let prop in arr[ele]){%>
+					<%if(prop=="msgtext"){ %>
+						<%let fot= arr[ele]['msgformet']%>
+						<%if(fot=="Send"|| fot=="Receive"||fot=="Sendtext"|| fot=="Receivetext"){%>
+							<p id="lastmsg" data-seen="<%=arr[ele]['seen']%>" data-formet="<%=arr[ele]['formet']%>" data-id="<%=arr[ele]['_id']%>"><%=arr[ele]['msgtext']%></p>
+						<%}%>
+						<%if(fot=="Sendimage"|| fot=="Receiveimage"){%>
+							<p id="lastmsg" data-seen="<%=arr[ele]['seen']%>" data-formet="<%=arr[ele]['formet']%>" data-id="<%=arr[ele]['_id']%>">Img</p>
+						<%}%>
+						<%if(fot=="Sendaudio"|| fot=="Receiveaudio"){%>
+							<p id="lastmsg" data-seen="<%=arr[ele]['seen']%>" data-formet="<%=arr[ele]['formet']%>" data-id="<%=arr[ele]['_id']%>">AUD</p>
+						<%}%>
+						<%if(fot=="Sendvideo"|| fot=="Receivevideo"){%>
+							<p id="lastmsg" data-seen="<%=arr[ele]['seen']%>" data-formet="<%=arr[ele]['formet']%>" data-id="<%=arr[ele]['_id']%>">Video</p>
+						<%}%>
+					<%}%>
+					<%if(prop=="Date"){%>
+						<%let str=arr[ele][prop],hh=new Date(str).getHours(),mm=new Date(str).getMinutes(),timezone="PM",dd=new Date(str).getDate(),MM=new Date(str).getMonth(),yy=new Date(str).getFullYear().toString().slice(2)%>
+						<%if(hh<10){hh="0"+hh;};if(mm<10){mm='0'+mm};if(MM){MM+=1;};if(MM<10){MM="0"+MM;};if(dd<10){dd="0"+dd;};%>
+						<%if(hh<12){timezone="AM"};if(hh>12){hh=hh-12;if(hh<10){hh="0"+hh;}}%>
+						<%if(new Date(str).toDateString()==new Date().toDateString()){%>
+							<p class="timeunit" id="time"><%=hh+":"+mm+":"+timezone%></p>
+						<%}%>
+						<%if(new Date(str).toDateString()!=new Date().toDateString()){%>
+								<%if(dd == new Date().getDate()-1){%>
+									<p class="timeunit" id="time"><%="Yesterday"%></p>
+								<%}%>
+								<%if(dd != new Date().getDate()-1){%>
+									<p class="timeunit" id="time"><%=dd+"/"+MM+"/"+yy%></p>
+								<%}%>
+						<%}%>
+						<%if(dd == new Date().getDate()-1){%>
+								<p class="timeunit" id="time"><%="Yesterday"%></p>
+						<%}%>
+					<%}%>
+				<%}%>
+				
+			</a>
+		<%})%>
+	</div> 
+</div>
+
+<script type="text/javascript">
+	document.getElementById("chat").style.borderBottom="3px solid";
+	document.getElementById("livechat").style.borderBottom="";
+	document.getElementById("circle").style.left="23.7%";
+	document.getElementById("circle_icon").innerText="comment";
+	let timebox=document.getElementsByClassName("timeunit");
+	/*for(ind=0;ind<timebox.length;ind++){
+		console.log(typeof(timebox[ind]));
+	}*/
+</script>

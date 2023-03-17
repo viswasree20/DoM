@@ -1,0 +1,67 @@
+<header id="header">
+	<h1>dream of depth</h1>
+</header>
+<div id="main" >
+	<form method="post" id="log-in">
+		<h1>Log-in</h1>
+		<input type="text" name="email" id="phonenum_or_email-id" placeholder="Email-id/Phone Number" required=""><br>
+		<input type="password" name="password" id="password"  placeholder="password" maxlength="15" required="" minlength="8"><br>
+		<input type="checkbox" name="viewpw" onclick="viewpassword()" class="viewpoint"><span class="viewpoint">Show Password</span>
+		<hr id="hrlogin">
+		<input type="submit" name="button" value="Log-in" id="loginbtn"><br>
+		<a href="/forgetpassword"class="forgetpassword">Forget password?</a><br>
+		
+		<p style="font-family: 'Roboto',sans-serif;margin: 5px 0px;" id="or">- or -</p>
+		<p  class="sign-in" id="createnew">create new user? <a href="/register" onclick="opencontainer2()">sign-in?</a></p>
+	</form>
+</div>
+<script type="text/javascript">
+	function verify(){
+		let verify=document.getElementById("alertmsg")
+		if(verify){
+			verify.remove();
+		}
+	}
+	document.getElementById("log-in").addEventListener("submit", function(e){
+		/*-- check the docment id name,if you submit event,
+		because submit event only take the form id name not the submit button id.name --*/
+
+		e.preventDefault()
+		//e.stopPropagation();
+		let email=document.getElementById("phonenum_or_email-id").value;
+		//console.log(username)
+		let password=document.getElementById("password").value;
+		fetch("/login",{
+			method:'POST',
+			headers:{"Accept":"application/json,text/plain,*/*","content-type":"application/json"},
+			body:JSON.stringify({email,password})
+		}).then(res=> res.json()).then(data=>{
+			console.log(data);
+			if(data.msg){
+				alert(data.msg)
+				
+				let output=document.createElement("div");
+				let att=document.createAttribute("id");
+				att.value="alertmsg";
+				output.attributes.setNamedItem(att);
+				let span=document.createElement("span");
+				let spatt=document.createAttribute("id");
+				spatt.value="msg";
+				span.attributes.setNamedItem(spatt);
+				span.innerText=data.msg;
+				output.appendChild(span);
+				//output+=`<div id="alertmsg" style="z-index:1;"><span id="msg">${data.msg}</span></div>`
+				//window.location.href='/login';
+				document.getElementById("phonenum_or_email-id").value="";
+				document.getElementById("password").value="";
+				document.getElementById("main").appendChild(output);
+			}
+			else{
+				server.emit("thisuser",data);
+				window.location.href='/';
+			}
+		})
+		
+	})
+
+</script>
